@@ -1,0 +1,50 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import sklearn
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.linear_model import LinearRegression
+import statsmodels.api as sm
+from sklearn.model_selection import train_test_split
+import warnings
+warnings.filterwarnings('ignore')
+from sklearn.feature_selection import RFE
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from sklearn.metrics import r2_score
+from google.colab import files
+store=files.upload()
+store = pd.read_excel('Cardekho Dataset.xlsx')
+store.head()
+store.shape
+store.info()
+(store.isnull().sum()/len(store))*100
+store['max_power'] = store['max_power'].replace({" ": np.NaN})
+store.dropna(inplace=True)
+store.shape(store.isnull().sum()/len(store))*100
+store.info()
+store.drop(columns=['name'], inplace=True)
+store['year'] = store['year'].astype('object')
+store.head()
+cat_cols = ['year','fuel','seller_type','transmission','owner']
+num_cols = ['selling_price','km_driven','mileage(km/ltr/kg)','engine','max_power','seats']
+plt.figure(figsize = [20,10])
+
+sns.distplot(store['selling_price'])
+plt.show()
+  plt.figure(figsize = [20,10])
+plt.suptitle('Categorical Bivariate Analysis\n', fontsize=30)
+i=1
+for col in cat_cols:
+        plt.subplot(2,3,i)
+        sns.barplot(x=store[col],y=store['selling_price'])
+        plt.title(f'{col} vs selling_price\n', fontdict={'size':25})
+        plt.xlabel(col, size=15)
+        plt.xticks(size=15, rotation=90)
+        i+=1
+        
+        
+plt.tight_layout()
+plt.show()
+  
+  
